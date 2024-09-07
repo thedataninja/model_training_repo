@@ -13,6 +13,7 @@ import json
 from google.cloud import bigquery
 from datetime import datetime
 
+
 storage_client = storage.Client()
 bucket = storage_client.bucket("ashish-ml-ops")
 
