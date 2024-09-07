@@ -1,0 +1,20 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/udemy-mlops-434016/python-apps/bank-campaign-model', '.']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/udemy-mlops-434016/python-apps/bank-campaign-model']
+
+- name: 'us-central1-docker.pkg.dev/udemy-mlops-434016/python-apps/bank-campaign-model'
+  entrypoint: 'bash'
+  args:
+   - '-c'
+   - |
+      python -m pytest
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone','https://github.com/thedataninja/model_training_repo.git']
+
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', 'model_training_repo/bank_campaign_model_training.py', 'gs://us-central1-ml-ops-airflow1-0c539437-bucket/dags']
+
